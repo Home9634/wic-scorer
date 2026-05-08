@@ -4,7 +4,7 @@ import re
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from uvicorn import config
-from config import PLAYERS_TAB, PLAYERS_NAME_COLUMN, GAME_CONFIG, TEAMS_COLUMN
+from config import PLAYERS_TAB, PLAYERS_NAME_COLUMN, PLAYERS_USERNAME_COLUMN, GAME_CONFIG, TEAMS_COLUMN
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
@@ -14,26 +14,27 @@ def get_service():
 
 def load_player_map(sheet_id: str) -> dict[str, str]:
     """
-    Reads the Players tab and builds a mapping of
+    Reads the Players tab columns A (display names) and D (usernames) and builds a mapping of
     raw lowercase username -> sheet display name e.g. "home9634" -> "Home9634 (O)"
     """
     service = get_service()
-    range_name = f"{PLAYERS_TAB}!{PLAYERS_NAME_COLUMN}:{PLAYERS_NAME_COLUMN}"
+    
+    # Read both columns A and D
     result = service.values().get(
         spreadsheetId=sheet_id,
-        range=range_name,
+        range=f"{PLAYERS_TAB}!A:D",
         valueRenderOption="FORMATTED_VALUE"
     ).execute()
 
     player_map = {}
     for row in result.get("values", []):
-        if not row:
-            continue
-        display_name = row[0].strip()
-        # Extract raw username — everything before the space-bracket
-        # e.g. "Home9634 (O)" -> "home9634"
-        raw = display_name.split(" (")[0].strip().lower()
-        player_map[raw] = display_name
+        # Column A is index 0 (display name), Column D is index 3 (username)
+        display_name = row[0].strip() if len(row) > 0 else None
+        username = row[3].strip() if len(row) > 3 else None
+        
+        if username:
+            # Use the username from column D
+            player_map[username.lower()] = display_name or username
 
     return player_map
 

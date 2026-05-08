@@ -3,6 +3,8 @@ PLAYERS_TAB = "Players"
 
 # Column in the Players tab where display names live e.g. "Ruby (R)"
 PLAYERS_NAME_COLUMN = "A"
+# Column in the Players tab where Minecraft usernames live
+PLAYERS_USERNAME_COLUMN = "D"
 TEAMS_COLUMN = "C"
 
 # Per-game config: tab name, and which column each round's placements go in
