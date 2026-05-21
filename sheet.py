@@ -171,8 +171,8 @@ def write_placements(game: str, round: int, placements: list[dict], sheet_id: st
     tab = config["tab"]
     player_map = load_player_map(sheet_id)
 
-    if game == "Sky Battle":
-        placements = add_missing_skb_winners(placements, sheet_id)
+    # if game == "Sky Battle":
+    #     placements = add_missing_skb_winners(placements, sheet_id)
 
     # Sort by place ascending
     sorted_placements = sorted(placements, key=lambda p: p["place"])
