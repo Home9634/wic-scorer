@@ -15,3 +15,7 @@ class GameUpdateRequest(BaseModel):
     placements: list[PlayerPlacement]
     kills: Optional[list[PlayerKill]] = None  # SKB only
     sheetUrl: str      # Full URL of the Google Sheet to update
+    
+class UnicodeConfig(BaseModel):
+    global_config: dict[str, str]
+    games: dict[str, dict[str, str]]

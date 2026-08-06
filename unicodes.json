@@ -1,0 +1,23 @@
+{
+    "global_config": {
+        "levelIcon": ""
+    },
+    "games": {
+        "Sky Battle": {
+            "eventChar": "",
+            "deathChar": ""
+        },
+        "Hole in the Wall": {
+            "eventChar": "",
+            "deathChar": ""
+        },
+        "TGTTOS": {
+            "eventChar": "",
+            "placementChar": ""
+        },
+        "Rocket Spleef Rush": {
+            "eventChar": "",
+            "deathChar": ""
+        }
+    }
+}

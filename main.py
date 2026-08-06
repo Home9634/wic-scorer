@@ -2,11 +2,15 @@ from fastapi import FastAPI, HTTPException
 from models import GameUpdateRequest
 from sheet import write_placements, write_kills
 import re
+
+from unicodes import load_unicodes, update_unicodes
 def extract_sheet_id(url: str) -> str:
     match = re.search(r"/spreadsheets/d/([a-zA-Z0-9-_]+)", url)
     if not match:
         raise ValueError(f"Invalid sheet URL: {url}")
     return match.group(1)
+from models import UnicodeConfig  # Import the new model
+
 
 app = FastAPI()
 
@@ -35,3 +39,12 @@ def update_game(req: GameUpdateRequest):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/unicodes")
+def get_unicodes():
+    return load_unicodes()
+
+@app.post("/unicodes")
+def update_unicodes_service(config: UnicodeConfig):
+    update_unicodes(config)
+   
